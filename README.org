@@ -12,7 +12,7 @@ This project implements Numerical Derivatives in C++ and Python, providing such 
 An example for a function by 5 nodes:
 
 $$
-f(x) = \cosh\left( e^{ -x^2 } \right), \quad x \in [-5, 5]
+f(x) = \cosh\left( \exp(-x^2) \right), \quad x \in [-5, 5]
 $$
 
 ** Navigation
