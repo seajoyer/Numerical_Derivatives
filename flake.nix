@@ -15,7 +15,7 @@
           (ps: with ps; [ numpy matplotlib sympy ]);
 
         cppProject = pkgs.stdenv.mkDerivation {
-          pname = "numerical_derivatives";
+          pname = "numerical_derivatives_example";
           version = "0.1.0";
           name = "numerical_derivatives-0.1.0";
 
@@ -38,22 +38,6 @@
           '';
         };
 
-        wrapperScript = pkgs.writeScriptBin "run-cpp" ''
-          #!${pkgs.bash}/bin/bash
-          set -e
-
-          TEMP_DIR=$(mktemp -d)
-          mkdir -p $TEMP_DIR/plots
-
-          PLOTS_DIR=$TEMP_DIR/plots ${cppProject}/bin/numerical_derivatives_example
-
-          for file in $TEMP_DIR/plots/*.gp; do
-            ${pkgs.gnuplot}/bin/gnuplot -p "$file" -e "set terminal x11; replot; pause mouse close;"
-          done
-
-          rm -rf $TEMP_DIR
-        '';
-
         pythonProject = pkgs.writeScriptBin "run-python" ''
           #!${pythonEnv}/bin/python
           import sys
@@ -72,7 +56,7 @@
         };
 
         apps = {
-          cpp = flake-utils.lib.mkApp { drv = wrapperScript; };
+          cpp = flake-utils.lib.mkApp { drv = cppProject; };
           py = flake-utils.lib.mkApp { drv = pythonProject; };
           default = self.apps.${system}.cpp;
         };
@@ -91,7 +75,7 @@
             pythonEnv
           ];
 
-          buildInputs = with pkgs; [ gnuplot boost catch2 ];
+          buildInputs = with pkgs; [ boost catch2 ];
           shellHook = ''
             export CXXFLAGS="''${CXXFLAGS:-} -I${pkgs.catch2}/include"
 
@@ -105,6 +89,7 @@
             echo "$(g++     --version | head -n 1)"
             echo "$(make    --version | head -n 1)"
             echo "$(python  --version | head -n 1)"
+            echo "$(gnuplot --version | head -n 1)"
             echo ""
             echo "Build the project:  nix build"
             echo "Run C++ project:    nix run .#cpp"
