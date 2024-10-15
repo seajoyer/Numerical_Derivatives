@@ -21,9 +21,9 @@
 
           src = ./cpp;
 
-          nativeBuildInputs = with pkgs; [ cmake gnumake ];
+          nativeBuildInputs = with pkgs; [ gnuplot cmake gnumake ];
 
-          buildInputs = with pkgs; [ gnuplot boost catch2 ];
+          buildInputs = with pkgs; [ boost catch2 ];
 
           cmakeFlags = [ "-DCMAKE_BUILD_TYPE=Release" ];
 
@@ -84,6 +84,7 @@
             cmake
             cmake-language-server
             gnumake
+            gnuplot
             ccache
             git
             pyright
