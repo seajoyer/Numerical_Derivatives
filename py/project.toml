@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "numerical_derivatives"
+version = "0.1.0"
+description = "A library for numerical computation of derivatives"
+requires-python = ">=3.7"
+dependencies = [
+    "numpy",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.setuptools]
+packages = ["numerical_derivatives"]

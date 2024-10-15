@@ -1,0 +1,102 @@
+* Homework on Numerical Derivatives
+
+This project implements Numerical Derivatives in C++ and Python, providing such functionality:
+
+- First left derivative
+- First right derivative
+- First central derivative
+- First asymmetric derivative
+- Second central derivative with 2nd accuracy
+- Second central derivative with 4th accuracy
+
+An example for a function by 5 nodes:
+
+$$
+f(x) = \cosh\left(\frac{e^{-x^{2}}\right), \quad x \in [-5, 5]
+$$
+
+** Navigation
+- [[#building-c][Building C++]]
+  - [[#for-nix-users][For Nix users]]
+  - [[#manually][Manually]]
+- [[#running-python][Running Python]]
+  - [[#for-nix-users-1][For Nix users]]
+  - [[#manually-1][Manually]]
+
+** Building C++
+
+*** For Nix users
+
+This project comes with a flake, for those lucky Nix users to build and run the C++ implementation it's enough to execute:
+#+begin_src shell
+nix run github:seajoyer/Numerical_Derivative#cpp --impure
+#+end_src shell
+Replace ~#cpp~ with ~#py~ to run the Python program.
+
+You can also start an isolated development shell with all the dependencies by simply running:
+#+begin_src shell
+nix develop github:seajoyer/Numerical_Derivative
+#+end_src shell
+
+*** Manually
+
+**** Prerequisites
+
+First, install dependencies, this is done differently in different systems:
+
+- [[https://gcc.gnu.org/][g++]] compiler
+- [[https://www.gnu.org/software/make/#download][Make]] build system
+- [[http://www.gnuplot.info/download.html][Gnuplot]] plotting program
+
+**** Building & Running
+
+1. Clone the repository:
+   #+begin_src shell
+   git clone https://github.com/seajoyer/Numerical_Derivative
+   cd Numerical_Derivative/cpp
+   #+end_src shell
+2. And once you are ready:
+   #+begin_src shell
+   mkdir -p build
+   cd build
+   cmake ..
+   make
+   #+end_src
+
+** Running Python
+
+*** For Nix users
+
+To run the python program, execute:
+
+#+begin_src shell
+nix run github:seajoyer/Numerical_Derivative#py --impure
+#+end_src shell
+
+To enter the isolated development shell with installed Python and necessary libs:
+#+begin_src shell
+nix develop github:seajoyer/Numerical_Derivative
+#+end_src shell
+
+*** Manually
+
+**** Prerequisites
+
+- Python itself
+- NumPy library
+- SymPy library
+- Matplotlib library
+
+Install them to your system.
+
+**** Running
+
+1. Clone the repo if haven't yet
+   #+begin_src shell
+   git clone https://github.com/seajoyer/Numerical_Derivative
+   cd Numerical_Derivative/py
+   #+end_src shell
+2. Then just execute:
+   #+begin_src shell
+   python3 demo.py
+   #+end_src shell
