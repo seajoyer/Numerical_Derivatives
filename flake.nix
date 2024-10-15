@@ -35,6 +35,7 @@
 
           installPhase = ''
             mkdir -p $out/bin
+            export PATH=$PATH:${pkgs.gnuplot}/bin
             cp numerical_derivatives_example $out/bin/
           '';
         };
@@ -81,7 +82,8 @@
             export CXXFLAGS="''${CXXFLAGS:-} -I${pkgs.catch2}/include"
 
             export CCACHE_DIR=$HOME/.ccache
-            export PATH="$HOME/.ccache/bin:$PATH"
+            export PATH="$HOME/.ccache/bin:$PATH:${pkgs.gnuplot}/bin"
+
 
             alias c=clear
 
