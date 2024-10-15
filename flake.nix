@@ -23,7 +23,7 @@
 
           nativeBuildInputs = with pkgs; [ gnuplot cmake gnumake ];
 
-          buildInputs = with pkgs; [ boost catch2 ];
+          buildInputs = with pkgs; [ gnuplot boost catch2 ];
 
           cmakeFlags = [ "-DCMAKE_BUILD_TYPE=Release" ];
 
@@ -77,7 +77,7 @@
 
           buildInputs = with pkgs; [ boost catch2 ];
           shellHook = ''
-            export CXXFLAGS="''${CXXFLAGS:-} -I${pkgs.catch2}/include"
+            export CXXFLAGS="''${CXXFLAGS:-} -I${pkgs.catch2}/include -I${pkgs.gnuplot}/bin"
 
             export CCACHE_DIR=$HOME/.ccache
             export PATH="$HOME/.ccache/bin:$PATH"
