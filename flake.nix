@@ -12,7 +12,7 @@
         pkgs = nixpkgs.legacyPackages.${system};
 
         pythonEnv = pkgs.python3.withPackages
-          (ps: with ps; [ numpy matplotlib sympy ]);
+          (ps: with ps; [ numpy matplotlib sympy tqdm ]);
 
         cppProject = pkgs.stdenv.mkDerivation {
           pname = "numerical_derivatives_example";

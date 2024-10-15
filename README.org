@@ -86,6 +86,7 @@ nix develop github:seajoyer/Numerical_Derivatives
 - NumPy library
 - SymPy library
 - Matplotlib library
+- tqdm library
 
 Install them to your system.
 
