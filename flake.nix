@@ -29,6 +29,7 @@
 
           buildPhase = ''
             cmake .
+            ${pkgs.bash}/bin/bash
             make -j $NIX_BUILD_CORES
           '';
 
