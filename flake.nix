@@ -29,7 +29,7 @@
 
           buildPhase = ''
             cmake .
-            ${pkgs.bash}/bin/bash
+            export PATH=$PATH:${pkgs.gnuplot}/bin
             make -j $NIX_BUILD_CORES
           '';
 
@@ -78,7 +78,7 @@
 
           buildInputs = with pkgs; [ boost catch2 ];
           shellHook = ''
-            export CXXFLAGS="''${CXXFLAGS:-} -I${pkgs.catch2}/include -I${pkgs.gnuplot}/bin"
+            export CXXFLAGS="''${CXXFLAGS:-} -I${pkgs.catch2}/include"
 
             export CCACHE_DIR=$HOME/.ccache
             export PATH="$HOME/.ccache/bin:$PATH"
