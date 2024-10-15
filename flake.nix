@@ -21,22 +21,27 @@
 
           src = ./cpp;
 
-          nativeBuildInputs = with pkgs; [ gnuplot cmake gnumake ];
+          nativeBuildInputs = with pkgs; [ cmake gnumake ];
 
-          buildInputs = with pkgs; [ gnuplot boost catch2 ];
+          buildInputs = with pkgs; [ gnuplot ];
 
-          cmakeFlags = [ "-DCMAKE_BUILD_TYPE=Release" ];
+          cmakeFlags = [
+            "-DCMAKE_BUILD_TYPE=Release"
+            "-DCMAKE_CXX_FLAGS=-std=c++17"
+          ];
 
           buildPhase = ''
             cmake .
-            export PATH=$PATH:${pkgs.gnuplot}/bin
-            make -j $NIX_BUILD_CORES
+            make VERBOSE=1 -j $NIX_BUILD_CORES
           '';
 
           installPhase = ''
             mkdir -p $out/bin
-            export PATH=$PATH:${pkgs.gnuplot}/bin
             cp numerical_derivatives_example $out/bin/
+          '';
+
+          fixupPhase = ''
+            patchelf --set-rpath "${pkgs.lib.makeLibraryPath [ pkgs.gnuplot ]}:${pkgs.stdenv.cc.cc.lib}/lib" $out/bin/numerical_derivatives_example
           '';
         };
 
@@ -58,7 +63,12 @@
         };
 
         apps = {
-          cpp = flake-utils.lib.mkApp { drv = cppProject; };
+          cpp = flake-utils.lib.mkApp {
+            drv = pkgs.writeShellScriptBin "run-cpp" ''
+              export PATH="${pkgs.gnuplot}/bin:$PATH"
+              ${cppProject}/bin/numerical_derivatives_example
+            '';
+          };
           py = flake-utils.lib.mkApp { drv = pythonProject; };
           default = self.apps.${system}.cpp;
         };
@@ -78,12 +88,12 @@
           ];
 
           buildInputs = with pkgs; [ boost catch2 ];
+
           shellHook = ''
-            export CXXFLAGS="''${CXXFLAGS:-} -I${pkgs.catch2}/include"
+            export CXXFLAGS="''${CXXFLAGS:-} -I${pkgs.catch2}/include -std=c++17"
 
             export CCACHE_DIR=$HOME/.ccache
-            export PATH="$HOME/.ccache/bin:$PATH:${pkgs.gnuplot}/bin"
-
+            export PATH="$HOME/.ccache/bin:$PATH"
 
             alias c=clear
 
