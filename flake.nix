@@ -45,15 +45,32 @@
           '';
         };
 
-        pythonProject = pkgs.writeScriptBin "run-python" ''
-          #!${pythonEnv}/bin/python
-          import sys
-          import os
+        pythonProject = pkgs.stdenv.mkDerivation {
+          pname = "python-numerical_derivatives";
+          version = "0.1.0";
+          name = "python-numerical_derivatives-0.1.0";
 
-          sys.path.insert(0, os.path.join(os.getcwd(), "py"))
+          src = ./py;
 
-          import demo
-        '';
+          nativeBuildInputs = [ pythonEnv ];
+
+          installPhase = ''
+            mkdir -p $out/bin $out/lib/python
+            cp -r . $out/lib/python/
+            cat > $out/bin/run-python <<EOF
+            #!${pythonEnv}/bin/python
+            import sys
+            import os
+
+            sys.path.insert(0, '$out/lib/python')
+            sys.path.insert(0, '$out/lib/python/numerical_derivatives')
+
+            import demo
+            demo.main()
+            EOF
+            chmod +x $out/bin/run-python
+          '';
+        };
 
       in {
         packages = {
@@ -69,7 +86,10 @@
               ${cppProject}/bin/numerical_derivatives_example
             '';
           };
-          py = flake-utils.lib.mkApp { drv = pythonProject; };
+          py = flake-utils.lib.mkApp {
+            drv = pythonProject;
+            name = "run-python";
+          };
           default = self.apps.${system}.cpp;
         };
 
