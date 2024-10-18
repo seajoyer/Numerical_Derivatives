@@ -18,6 +18,12 @@ from numerical_derivatives.utils import (
     generate_grid,
 )
 
+a = -5
+b = 5
+h_min  = 0.0000005
+h_max  = 0.00002
+h_step = 0.0000004
+
 def calculate_error(h):
     x = generate_grid(a, b, h)
     numerical_derivative = first_derivative_central(f, x, h)
@@ -26,12 +32,6 @@ def calculate_error(h):
     return h, np.log(max_error), np.log(h)
 
 def main():
-    a = -5
-    b = 5
-    h_min  = 0.0000005
-    h_max  = 0.00002
-    h_step = 0.0000004
-
     h_range = np.arange(h_min, h_max, h_step)
 
     results = [None] * len(h_range)
